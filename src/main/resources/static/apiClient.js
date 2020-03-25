@@ -27,6 +27,6 @@ apiClient = (function() {
                 },
                 async: true
             });
-        },
+        }
     };
 })();

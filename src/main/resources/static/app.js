@@ -68,13 +68,13 @@ var app = (function () {
         table.append(contentTable);
         apiClient.getCountry(tablaC,pais)
     }
-/* keyId */
+    
     var tablaC = function(data){
         var table = $('#contry');
         var datos= JSON.parse(data);
         var paises =datos.data.covid19Stats;
+        solopaises= sortJSON(Object.values(groupByprovince(paises,'province')),'deaths');
         mapa(paises[0].country);
-        solopaises= sortJSON(paises,'deaths');
         console.log(solopaises)
         console.log("arreglados")
         table.empty();
@@ -134,6 +134,16 @@ var app = (function () {
         return miarray.reduce(function(groups, item) {
             var val = item[prop];
             groups[val] = groups[val] || {country: item.country, deaths: 0, confirmed: 0,recovered: 0};
+            groups[val].deaths += item.deaths;
+            groups[val].confirmed += item.confirmed;
+            groups[val].recovered += item.recovered;
+            return groups;
+        }, {});
+    }
+    var groupByprovince = function (miarray, prop) {
+        return miarray.reduce(function(groups, item) {
+            var val = item[prop];
+            groups[val] = groups[val] || {province: item.province, deaths: 0, confirmed: 0,recovered: 0};
             groups[val].deaths += item.deaths;
             groups[val].confirmed += item.confirmed;
             groups[val].recovered += item.recovered;
