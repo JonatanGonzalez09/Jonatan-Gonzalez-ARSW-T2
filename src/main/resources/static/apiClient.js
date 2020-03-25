@@ -2,7 +2,7 @@ apiClient = (function() {
     return {
         getallcountries: function(callback) {
             jQuery.ajax({
-                url: 'http://localhost:8080/getallcountries',
+                url: 'https://jonatan-gonzalez-arsw-t2.herokuapp.com//getallcountries',
                 success: function (result) {
                     callback(result);
                 },
