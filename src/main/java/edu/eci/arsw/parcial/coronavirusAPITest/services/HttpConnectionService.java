@@ -45,4 +45,22 @@ public class HttpConnectionService {
         
         return jsonString;
     }
+    /**
+     * 
+     * @param name Nombre del pais a buscar.
+     * @return El Json con las cordenadas de la busqueda por el pais
+     * @throws UnirestException En caso de que no se encuentre el pais.
+     */
+    public String getCordenadaContry(String name) throws UnirestException {
+        String jsonString = null;
+        
+        HttpResponse<String> response = Unirest.get("https://restcountries-v1.p.rapidapi.com/name/"+name)
+        .header("x-rapidapi-host", "restcountries-v1.p.rapidapi.com")
+        .header("x-rapidapi-key", "4a71d98902mshebb28f37a4e303ep14be52jsn5e65fb31a9e2")
+        .asString();
+        
+        jsonString = response.getBody();
+        
+        return jsonString;
+    }
 }

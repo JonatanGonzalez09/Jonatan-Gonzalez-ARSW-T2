@@ -73,7 +73,7 @@ var app = (function () {
         var table = $('#contry');
         var datos= JSON.parse(data);
         var paises =datos.data.covid19Stats;
-        mapa(paises);
+        mapa(paises[0].country);
         solopaises= sortJSON(paises,'deaths');
         console.log(solopaises)
         console.log("arreglados")
@@ -104,27 +104,27 @@ var app = (function () {
         table.append(contentTable);
     }
 
-    var mapa = function(paises){
+    var mapa = function(pais){
         $('#mapa').removeAttr('hidden')
-        apiClient.coordenada(mapaPosition,paises[0].country);       
+        apiClient.coordenada(mapaPosition,pais); 
         
-        for (var i = 0; i < paises.length; i++) {
-            apiClient.coordenada(marker, paises[i].keyId)
-        }
     }
-    var mapaPosition= function(coordC){
-        var myLatlngC = new google.maps.LatLng(coordC.geometry.lat,coordC.geometry.lng);
+    var mapaPosition= function(data){
+        var coordC =JSON.parse(data);
+        console.log(coordC[0].latlng[0])
+        var myLatlngC = new google.maps.LatLng(coordC[0].latlng[0],coordC[0].latlng[1]);
         var mapOptions = {
         zoom: 4,
         center: myLatlngC
         }
         map = new google.maps.Map(document.getElementById("mapa"), mapOptions);
+        console.log(coordC[0].latlng)
+        marker(coordC[0].latlng[0],coordC[0].latlng[1])
     }   
-    var marker = function(coord) {
-        var myLatlng = new google.maps.LatLng(coord.geometry.lat,coord.geometry.lng);
+    var marker = function(lat,long) {
+        var myLatlng = new google.maps.LatLng(lat,long);
         var marker = new google.maps.Marker({
-            position: myLatlng,
-            title: coord.formatted 
+            position: myLatlng
         });
         marker.setMap(map);
     }
