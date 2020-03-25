@@ -70,4 +70,19 @@ public class CoronavirusStatsController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    /**
+     * Funcion que me retorna las coordenadas de un pais y provincia.
+     * @param name El pais a buscar. 
+     * @return El JSON de las coordenadas del pais y provincia seleccionado.
+     */
+    @RequestMapping(value = "/getprovincia/{name}",method = RequestMethod.GET)
+    public ResponseEntity<?> getCordenadaProvince(@PathVariable ("name")String name){
+        try {
+            String consulta = coodenadaServer.getCordenadaProvince(name);
+            return new ResponseEntity<>(consulta, HttpStatus.OK);
+        } catch (CoronavirusException ex) {
+            Logger.getLogger(CoronavirusApiTestApplication.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

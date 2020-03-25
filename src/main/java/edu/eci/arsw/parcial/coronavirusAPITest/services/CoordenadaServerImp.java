@@ -27,6 +27,22 @@ public class CoordenadaServerImp implements CoodenadaServer {
             throw new CoronavirusException("Country not found");
         }
         return data;
+    
+    }
+    /**
+     * Retorna el JSON de las coordenadas de un pais y provincia
+     * @param name que se debe buscar en la API.
+     * @return Retorna el Json de las coordenadas.
+     */
+    @Override
+    public String getCordenadaProvince(String name) throws CoronavirusException {
+        String data;
+        try {
+                data = covidHttp.getCordenadaProvince(name);
+        } catch(UnirestException e){
+            throw new CoronavirusException("Country not found");
+        }
+        return data;
     }
 
 }

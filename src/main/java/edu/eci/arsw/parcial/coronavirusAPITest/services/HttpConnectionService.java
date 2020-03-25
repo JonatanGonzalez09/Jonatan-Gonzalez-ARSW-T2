@@ -63,4 +63,23 @@ public class HttpConnectionService {
         
         return jsonString;
     }
+
+    /**
+     * 
+     * @param name Nombre del pais y provincia a buscar.
+     * @return El Json con las cordenadas de la busqueda por el pais y provincia
+     * @throws UnirestException En caso de que no se encuentre el pais y provincia.
+     */
+    public String getCordenadaProvince(String name) throws UnirestException {
+        String jsonString = null;
+        
+        HttpResponse<String> response = Unirest.get("https://trueway-geocoding.p.rapidapi.com/Geocode?language=en&country=US&address="+name)
+            .header("x-rapidapi-host", "trueway-geocoding.p.rapidapi.com")
+            .header("x-rapidapi-key", "b4115ee3e5msh1d0a76872e5ca5cp1b2332jsn94d2aa2481c3")
+            .asString();
+        
+        jsonString = response.getBody();
+        
+        return jsonString;
+    }
 }
