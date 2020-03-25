@@ -10,6 +10,11 @@ import org.springframework.stereotype.Service;
 @Service
 @Configuration
 public class HttpConnectionService {
+    /**
+     * 
+     * @return Trae el JSON de todos los paises.
+     * @throws UnirestException En caso de que no exista los paises.
+     */
     public String getAllCountries() throws UnirestException {
         String jsonString = null;
 
@@ -22,6 +27,12 @@ public class HttpConnectionService {
         return jsonString;
     }
 
+    /**
+     * 
+     * @param name Nombre del pais a buscar.
+     * @return El pais encontrado.
+     * @throws UnirestException En caso de que no se encuentre el pais.
+     */
     public String getCountry(String name) throws UnirestException {
         String jsonString = null;
         

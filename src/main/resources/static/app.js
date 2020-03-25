@@ -46,7 +46,7 @@ var app = (function () {
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Birth Day</th>
+                    <th>DATA</th>
                 </tr>
             </thead>
             <tbody>
@@ -73,6 +73,7 @@ var app = (function () {
         var table = $('#contry');
         var datos= JSON.parse(data);
         var paises =datos.data.covid19Stats;
+        mapa(paises);
         solopaises= sortJSON(paises,'deaths');
         console.log(solopaises)
         console.log("arreglados")
@@ -101,7 +102,33 @@ var app = (function () {
         }
         contentTable+='</tbody> </table>';
         table.append(contentTable);
-    }        
+    }
+
+    var mapa = function(paises){
+        $('#mapa').removeAttr('hidden')
+        apiClient.coordenada(mapaPosition,paises[0].country);       
+        
+        for (var i = 0; i < paises.length; i++) {
+            apiClient.coordenada(marker, paises[i].keyId)
+        }
+    }
+    var mapaPosition= function(coordC){
+        var myLatlngC = new google.maps.LatLng(coordC.geometry.lat,coordC.geometry.lng);
+        var mapOptions = {
+        zoom: 4,
+        center: myLatlngC
+        }
+        map = new google.maps.Map(document.getElementById("mapa"), mapOptions);
+    }   
+    var marker = function(coord) {
+        var myLatlng = new google.maps.LatLng(coord.geometry.lat,coord.geometry.lng);
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            title: coord.formatted 
+        });
+        marker.setMap(map);
+    }
+        
 
     var groupBy = function (miarray, prop) {
         return miarray.reduce(function(groups, item) {
