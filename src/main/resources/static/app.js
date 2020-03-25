@@ -1,5 +1,6 @@
 var app = (function () {
     var solopaises;
+    var map;
     var init = function () {
         apiClient.getallcountries(tabla)
     }
@@ -24,7 +25,7 @@ var app = (function () {
         for (var i = 0; i < solopaises.length; i++) {
             contentTable +=`
           <tr>
-              <td>`+ solopaises[i].country+`</td>
+              <td><a href= "#" onclick="app.getContry('`+ solopaises[i].country+`','`+solopaises[i].deaths+`','`+solopaises[i].confirmed+`','`+solopaises[i].recovered+`')">` + solopaises[i].country + `</a></td>
               <td>` + solopaises[i].deaths + `</td>
               <td>` + solopaises[i].confirmed + `</td>
               <td>` + solopaises[i].recovered + `</td>         
@@ -34,6 +35,74 @@ var app = (function () {
         contentTable+='</tbody> </table>';
         table.append(contentTable);
     }
+
+    var getContry = function (pais,deaths,confirmed,recovered) {
+        var table = $('#resum');
+        table.empty();
+        $('#title').empty();
+        $('#title').html(`<h1 class="text-center">`+pais+`</h1>`);
+        var contentTable =`
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Birth Day</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Num deaths</td>
+                    <td>`+deaths+`</td>
+                </tr>    
+                <tr>
+                    <td>Num confirmed</td>
+                    <td>`+confirmed+`</td>
+                </tr>    
+                <tr>
+                    <td>Num recovered</td>
+                    <td>`+recovered+`</td>
+                </tr> 
+            </tbody>
+        </table>       
+        `;
+        table.append(contentTable);
+        apiClient.getCountry(tablaC,pais)
+    }
+/* keyId */
+    var tablaC = function(data){
+        var table = $('#contry');
+        var datos= JSON.parse(data);
+        var paises =datos.data.covid19Stats;
+        solopaises= sortJSON(paises,'deaths');
+        console.log(solopaises)
+        console.log("arreglados")
+        table.empty();
+        var contentTable =`
+        <table class="table table-bordered">
+        <thead>
+          <tr>
+              <th>Province</th>
+              <th>Num deaths</th>
+              <th>Num confirmed</th>
+              <th>Num recovered</th>
+          </tr>
+      </thead>
+      </tbody>
+      `;
+        for (var i = 0; i < solopaises.length; i++) {
+            contentTable+=`
+          <tr>
+              <td>` + solopaises[i].province + `</td>
+              <td>` + solopaises[i].deaths + `</td>
+              <td>` + solopaises[i].confirmed + `</td>
+              <td>` + solopaises[i].recovered + `</td>         
+          </tr>
+          `;
+        }
+        contentTable+='</tbody> </table>';
+        table.append(contentTable);
+    }        
+
     var groupBy = function (miarray, prop) {
         return miarray.reduce(function(groups, item) {
             var val = item[prop];
@@ -51,7 +120,8 @@ var app = (function () {
         });
     }
     return {
-        init:init
+        init:init,
+        getContry:getContry
     }
 
 })();
